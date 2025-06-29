@@ -1,0 +1,346 @@
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Blinker:wght@100;200;300;400;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Theme - Eco-Conscious */
+    --background: 0 0% 98%; /* #FAFAFA */
+    --foreground: 210 22% 31%; /* #2F4F4F */
+    --card: 0 0% 98%; /* #FAFAFA */
+    --card-foreground: 210 22% 31%; /* #2F4F4F */
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 22% 31%;
+    --primary: 122 39% 49%; /* #4CAF50 */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 60 29% 96%; /* #F5F5DC beige */
+    --secondary-foreground: 210 22% 31%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 210 22% 45%;
+    --accent: 60 29% 96%; /* #F5F5DC */
+    --accent-foreground: 210 22% 31%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 90%;
+    --input: 0 0% 92%;
+    --ring: 122 39% 49%;
+    --radius: 1rem;
+
+    /* Eco-specific variables */
+    --eco-primary: #4caf50;
+    --eco-forest: #2f4f4f;
+    --eco-soft: #fafafa;
+    --eco-beige: #f5f5dc;
+    --eco-coral: #ffb6b6;
+
+    /* Text contrast helpers */
+    --text-on-gradient: #ffffff;
+    --text-on-light-gradient: #2f4f4f;
+  }
+
+  .dark {
+    /* Dark Theme - Forest Green */
+    --background: 210 22% 18%; /* #2F4F4F Dark Forest */
+    --foreground: 0 0% 95%; /* #F1F1F1 Soft white */
+    --card: 210 22% 22%; /* #3A5A5A Lighter forest */
+    --card-foreground: 0 0% 95%;
+    --popover: 210 22% 22%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 122 39% 49%; /* #4CAF50 Keep green */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 210 22% 25%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 210 22% 25%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 210 22% 25%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 62% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 210 22% 25%;
+    --input: 210 22% 25%;
+    --ring: 122 39% 49%;
+
+    /* Dark theme text contrast helpers */
+    --text-on-gradient: #ffffff;
+    --text-on-light-gradient: #f1f1f1;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border transition-colors duration-300 ease-in-out;
+  }
+
+  html {
+    @apply scroll-smooth;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased transition-all duration-300 ease-in-out;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    line-height: 1.6;
+  }
+
+  /* Typography Hierarchy */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-semibold tracking-tight text-foreground;
+    line-height: 1.2;
+  }
+
+  h1 {
+    @apply text-4xl lg:text-5xl xl:text-6xl;
+    font-weight: 700;
+  }
+
+  h2 {
+    @apply text-3xl lg:text-4xl xl:text-5xl;
+    font-weight: 600;
+  }
+
+  h3 {
+    @apply text-2xl lg:text-3xl xl:text-4xl;
+    font-weight: 600;
+  }
+
+  h4 {
+    @apply text-xl lg:text-2xl xl:text-3xl;
+    font-weight: 600;
+  }
+
+  h5 {
+    @apply text-lg lg:text-xl xl:text-2xl;
+    font-weight: 500;
+  }
+
+  h6 {
+    @apply text-base lg:text-lg xl:text-xl;
+    font-weight: 500;
+  }
+
+  p {
+    @apply text-base leading-7 text-foreground/90;
+    font-weight: 400;
+  }
+
+  /* Custom scrollbar with eco theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted/50;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/60 rounded-full transition-colors duration-200;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary;
+  }
+
+  /* Smooth focus transitions */
+  *:focus {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  /* Responsive spacing grid (8px base) */
+  .spacing-grid {
+    padding: calc(var(--spacing-unit, 8px) * var(--multiplier, 1));
+  }
+}
+
+@layer components {
+  /* Eco-conscious gradient button */
+  .btn-gradient {
+    @apply bg-gradient-eco hover:bg-gradient-eco-hover font-semibold px-6 py-3 rounded-2xl transition-all duration-300 ease-in-out transform hover:scale-105 shadow-floating hover:shadow-glow-eco border-0 relative overflow-hidden;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-gradient::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full transition-transform duration-700 ease-in-out;
+  }
+
+  .btn-gradient:hover::before {
+    @apply translate-x-full;
+  }
+
+  /* Beige accent button */
+  .btn-accent {
+    @apply bg-gradient-to-r from-eco-beige to-eco-coral hover:from-eco-coral hover:to-eco-beige font-semibold px-6 py-3 rounded-2xl transition-all duration-300 ease-in-out transform hover:scale-105 shadow-floating border-0;
+    color: #2f4f4f !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  }
+
+  /* Infinity floating card */
+  .card-infinity {
+    @apply bg-card/90 backdrop-blur-sm border border-border/20 rounded-2xl p-8 transition-all duration-300 ease-in-out shadow-floating hover:shadow-floating-hover hover:-translate-y-2 relative overflow-hidden;
+  }
+
+  .card-infinity::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-overlay pointer-events-none opacity-30;
+  }
+
+  /* Ensure text is readable in cards */
+  .card-infinity * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Enhanced card hover with eco theme */
+  .card-hover {
+    @apply transition-all duration-300 ease-in-out hover:shadow-infinity hover:-translate-y-2 hover:border-primary/30 rounded-2xl;
+  }
+
+  /* Eco gradient text */
+  .gradient-text {
+    @apply bg-gradient-eco bg-clip-text text-transparent font-bold;
+  }
+
+  .gradient-text-forest {
+    @apply bg-gradient-forest bg-clip-text text-transparent font-bold;
+  }
+
+  /* Readable gradient text with fallback */
+  .gradient-text-readable {
+    @apply font-bold text-primary;
+    background: linear-gradient(
+      135deg,
+      #4caf50 0%,
+      rgba(76, 175, 80, 0.8) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Fallback for better readability */
+  @supports not (-webkit-background-clip: text) {
+    .gradient-text-readable {
+      color: #4caf50 !important;
+    }
+  }
+
+  /* Glass morphism with eco tint */
+  .glass {
+    @apply bg-background/80 backdrop-blur-md border border-border/30 rounded-2xl;
+  }
+
+  .glass-eco {
+    @apply bg-gradient-to-br from-background/95 via-primary/30 to-background/90 backdrop-blur-lg border border-primary/20 rounded-2xl;
+  }
+
+  /* Ensure text contrast in glass elements */
+  .glass,
+  .glass-eco {
+    color: hsl(var(--foreground));
+  }
+
+  .glass *,
+  .glass-eco * {
+    color: inherit;
+  }
+
+  /* Floating animation */
+  .float {
+    @apply animate-float;
+  }
+
+  /* Eco glow effects */
+  .glow {
+    @apply shadow-glow-eco;
+  }
+
+  .glow-soft {
+    @apply shadow-glow-soft;
+  }
+
+  /* Status indicators with eco colors */
+  .status-success {
+    @apply bg-gradient-success px-4 py-2 rounded-full text-sm font-medium shadow-soft;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .status-warning {
+    @apply bg-gradient-warning px-4 py-2 rounded-full text-sm font-medium shadow-soft;
+    color: #2f4f4f !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  }
+
+  .status-danger {
+    @apply bg-gradient-danger px-4 py-2 rounded-full text-sm font-medium shadow-soft;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Interactive elements with smooth transitions */
+  .interactive {
+    @apply transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 cursor-pointer;
+  }
+
+  /* Enhanced focus styles */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background transition-all duration-200 ease-in-out;
+  }
+
+  /* Loading shimmer with eco theme */
+  .shimmer {
+    @apply relative overflow-hidden rounded-2xl;
+  }
+
+  .shimmer::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-shimmer;
+    background-size: 200% 100%;
+  }
+
+  /* Infinity scroll container */
+  .infinity-scroll {
+    @apply overflow-y-auto scrollbar-thin scrollbar-thumb-primary/60 scrollbar-track-muted/30;
+  }
+
+  /* Micro-interactions */
+  .micro-hover {
+    @apply transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-glow-soft;
+  }
+
+  /* Responsive spacing utilities */
+  .space-eco-xs {
+    @apply space-y-2;
+  }
+  .space-eco-sm {
+    @apply space-y-4;
+  }
+  .space-eco-md {
+    @apply space-y-6;
+  }
+  .space-eco-lg {
+    @apply space-y-8;
+  }
+  .space-eco-xl {
+    @apply space-y-12;
+  }
+
+  /* Fluid layout utilities */
+  .fluid-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .borderless {
+    @apply border-0 outline-0;
+  }
+}

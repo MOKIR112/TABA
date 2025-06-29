@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  avatar        String?
+  location      String?
+  bio           String?
+  phone         String?
+  emailVerified Boolean   @default(false)
+  phoneVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  listings      Listing[]
+  sentMessages  Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  sentTrades    Trade[]   @relation("SentTrades")
+  receivedTrades Trade[]  @relation("ReceivedTrades")
+  givenRatings  Rating[]  @relation("GivenRatings")
+  receivedRatings Rating[] @relation("ReceivedRatings")
+  favorites     Favorite[]
+  
+  @@map("users")
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  category    String
+  condition   String
+  location    String
+  images      String[]
+  wantedItems String[]
+  status      ListingStatus @default(ACTIVE)
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages    Message[]
+  trades      Trade[]
+  favorites   Favorite[]
+  
+  @@map("listings")
+}
+
+enum ListingStatus {
+  ACTIVE
+  COMPLETED
+  DRAFT
+  DELETED
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+  
+  // Relations
+  senderId    String
+  receiverId  String
+  listingId   String?
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  listing     Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+  
+  @@map("messages")
+}
+
+model Trade {
+  id            String      @id @default(cuid())
+  status        TradeStatus @default(PENDING)
+  initiatorItem String
+  receiverItem  String
+  meetingLocation String?
+  meetingDate   DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Relations
+  initiatorId String
+  receiverId  String
+  listingId   String
+  initiator   User    @relation("SentTrades", fields: [initiatorId], references: [id], onDelete: Cascade)
+  receiver    User    @relation("ReceivedTrades", fields: [receiverId], references: [id], onDelete: Cascade)
+  listing     Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  ratings     Rating[]
+  
+  @@map("trades")
+}
+
+enum TradeStatus {
+  PENDING
+  ACCEPTED
+  COMPLETED
+  CANCELLED
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  rating    Int      @db.SmallInt
+  comment   String?
+  createdAt DateTime @default(now())
+  
+  // Relations
+  raterId   String
+  ratedId   String
+  tradeId   String
+  rater     User  @relation("GivenRatings", fields: [raterId], references: [id], onDelete: Cascade)
+  rated     User  @relation("ReceivedRatings", fields: [ratedId], references: [id], onDelete: Cascade)
+  trade     Trade @relation(fields: [tradeId], references: [id], onDelete: Cascade)
+  
+  @@unique([raterId, tradeId])
+  @@map("ratings")
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  
+  // Relations
+  userId    String
+  listingId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, listingId])
+  @@map("favorites")
+}
